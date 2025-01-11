@@ -8,10 +8,7 @@ import com.challenge.literatura.service.ConvierteDatos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 @Component
 public class Major {
@@ -159,14 +156,35 @@ public class Major {
         teclado.nextLine();
         if(ano < 0){
             System.out.println("El ano no puede ser negativo");
+            return;
         }
         List<Autor> autorPorAno = autorRepository.findByFechaDeNacimientoLessThanEqualAndFechaDeFallecimientoGreaterThanEqual(ano, ano);
         if(autorPorAno.isEmpty()) {
             System.out.println("No hay autores registrados para el año " + ano);
+            return;
         }
         autorPorAno.stream().sorted(Comparator.comparing(Autor::getNombre)).forEach(System.out::println);
     }
 
     private void listarLibrosPorIdioma() {
+        System.out.println("Escribe el idioma en el que deseas hacer la busqueda: ");
+        String idiomaMenu = """
+                        es - Español
+                        en - Ingles
+                        fr - Frances
+                        pt - Portugues
+                """;
+        System.out.println(idiomaMenu);
+        var idioma = teclado.nextLine();
+        if (!Set.of("es", "en", "fr", "pt").contains(idioma)) {
+            System.out.println("Idioma no válido, intenta de nuevo");
+            return;
+        }
+        List<Libro> libroPorIdioma = libroRepository.findByIdiomasContaining(idioma);
+        if(libroPorIdioma.isEmpty()) {
+            System.out.println("No existe en la base de datos un libro con el idioma seleccionado");
+            return;
+        }
+        libroPorIdioma.stream().sorted(Comparator.comparing(Libro::getIdiomas)).forEach(System.out::println);
     }
 }

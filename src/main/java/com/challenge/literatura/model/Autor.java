@@ -73,13 +73,18 @@ public class Autor {
     public String toString() {
         StringBuilder tituloLibros = new StringBuilder();
         for (Libro libro : libros) {
-            tituloLibros.append(libro.getTitulo()).append(", ");
+            tituloLibros.append(libro.getTitulo()+", ");
         }
 
+        if(tituloLibros.length()>0){
+            tituloLibros.deleteCharAt(tituloLibros.length()-1);
+        }
         return "\n" + "-----------Autor-----------" + "\n" +
                 "Autor: " + nombre + "\n" +
                 "fecha De Nacimiento: " + fechaDeNacimiento + "\n" +
                 "fecha De Fallecimiento:  " + fechaDeFallecimiento + "\n" +
-                "libros: " + "{" + tituloLibros + "}\n" ;
+                "libros: " + "[" + tituloLibros + "]\n" ;
     }
+
+
 }
