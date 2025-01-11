@@ -1,15 +1,21 @@
 package com.challenge.literatura.model;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Libro {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String titulo;
     private String idiomas;
     private Double numeroDeDescargas;
     private String libroDetalles;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Autor> autores = new ArrayList<>();
 
     public Libro(DatosLibro datosLibro) {
@@ -17,6 +23,10 @@ public class Libro {
         this.idiomas = String.valueOf(datosLibro.idiomas());
         this.numeroDeDescargas = datosLibro.numeroDeDescargas();
         this.libroDetalles = String.valueOf(datosLibro.libroDetalles());
+    }
+
+    public Libro() {
+
     }
 
     @Override
