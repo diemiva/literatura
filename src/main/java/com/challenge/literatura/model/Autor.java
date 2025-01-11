@@ -73,13 +73,13 @@ public class Autor {
     public String toString() {
         StringBuilder tituloLibros = new StringBuilder();
         for (Libro libro : libros) {
-            tituloLibros.append(libro.getTitulo()).append("\n");
+            tituloLibros.append(libro.getTitulo()).append(", ");
         }
 
-        return "-----------Autor-----------" + "\n" +
+        return "\n" + "-----------Autor-----------" + "\n" +
                 "Autor: " + nombre + "\n" +
                 "fecha De Nacimiento: " + fechaDeNacimiento + "\n" +
                 "fecha De Fallecimiento:  " + fechaDeFallecimiento + "\n" +
-                "libros: " + tituloLibros ;
+                "libros: " + "{" + tituloLibros + "}\n" ;
     }
 }

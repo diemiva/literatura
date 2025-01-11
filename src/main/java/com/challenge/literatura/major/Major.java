@@ -5,7 +5,6 @@ import com.challenge.literatura.repository.AutorRepository;
 import com.challenge.literatura.repository.LibroRepository;
 import com.challenge.literatura.service.ConsumoAPI;
 import com.challenge.literatura.service.ConvierteDatos;
-//import com.challenge.literatura.service.ServicioLibro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,8 +19,6 @@ public class Major {
     private Scanner teclado = new Scanner(System.in);
     private ConsumoAPI consumoAPI = new ConsumoAPI();
     private ConvierteDatos convierteDatos = new ConvierteDatos();
-//    @Autowired
-//    private ServicioLibro servicioLibro;
     private LibroRepository libroRepository;
     private AutorRepository autorRepository;
 
@@ -36,14 +33,11 @@ public class Major {
     }
 
     public void menuConsulta() {
-//        var json = consumoAPI.obtenerDatos(URL_API);
-//        System.out.println(json);
-//        var datos = convierteDatos.obtenerDatos(json, Datos.class);
-//        System.out.println(datos);
 
         var opcion = -1;
         while (opcion != 0) {
             var menu = """
+                     \n
                      1- Buscar libro por titulo
                      2- Listar libros registrados
                      3- Listar autores registrados
@@ -160,6 +154,17 @@ public class Major {
     }
 
     private void listarAutoresVivosPorAno() {
+        System.out.println("Digite el año para el cual desea buscar: ");
+        var ano = teclado.nextInt();
+        teclado.nextLine();
+        if(ano < 0){
+            System.out.println("El ano no puede ser negativo");
+        }
+        List<Autor> autorPorAno = autorRepository.findByFechaDeNacimientoLessThanEqualAndFechaDeFallecimientoGreaterThanEqual(ano, ano);
+        if(autorPorAno.isEmpty()) {
+            System.out.println("No hay autores registrados para el año " + ano);
+        }
+        autorPorAno.stream().sorted(Comparator.comparing(Autor::getNombre)).forEach(System.out::println);
     }
 
     private void listarLibrosPorIdioma() {
