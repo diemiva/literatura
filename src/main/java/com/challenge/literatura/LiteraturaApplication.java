@@ -1,14 +1,20 @@
 package com.challenge.literatura;
 
-import com.challenge.literatura.Major.Major;
+import com.challenge.literatura.major.Major;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.security.Principal;
-
 @SpringBootApplication
 public class LiteraturaApplication implements CommandLineRunner {
+
+	private final Major major;
+
+	@Autowired
+	public LiteraturaApplication(Major major) {
+		this.major = major;
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(LiteraturaApplication.class, args);
@@ -16,8 +22,6 @@ public class LiteraturaApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Major major = new Major();
 		major.menuConsulta();
-
 	}
 }

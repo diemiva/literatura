@@ -6,33 +6,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "autor")
 public class Autor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
-    private String fechaDeNacimiento;
+    private int fechaDeNacimiento;
+    private int fechaDeFallecimiento;
 
-    @ManyToMany(mappedBy = "autores")
-    private List<Libro> librosDeAutor = new ArrayList<>();
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Libro> libros= new ArrayList<>();
+
 
     public Autor(DatosAutor datosAutor) {
         this.nombre = datosAutor.nombre();
         this.fechaDeNacimiento = datosAutor.fechaDeNacimiento();
+        this.fechaDeFallecimiento = datosAutor.fechaDeFallecimiento();
     }
 
     public Autor() {
 
-    }
-
-    @Override
-    public String toString() {
-        return "Autor{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", fechaDeNacimiento='" + fechaDeNacimiento + '\'' +
-                ", librosDeAutor=" + librosDeAutor +
-                '}';
     }
 
     public Long getId() {
@@ -43,6 +37,14 @@ public class Autor {
         this.id = id;
     }
 
+    public int getFechaDeNacimiento() {
+        return fechaDeNacimiento;
+    }
+
+    public void setFechaDeNacimiento(int fechaDeNacimiento) {
+        this.fechaDeNacimiento = fechaDeNacimiento;
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -51,21 +53,33 @@ public class Autor {
         this.nombre = nombre;
     }
 
-    public String getFechaDeNacimiento() {
-        return fechaDeNacimiento;
+    public int getFechaDeFallecimiento() {
+        return fechaDeFallecimiento;
     }
 
-    public void setFechaDeNacimiento(String fechaDeNacimiento) {
-        this.fechaDeNacimiento = fechaDeNacimiento;
+    public void setFechaDeFallecimiento(int fechaDeFallecimiento) {
+        this.fechaDeFallecimiento = fechaDeFallecimiento;
     }
 
-    public List<Libro> getLibrosDeAutor() {
-        return librosDeAutor;
+    public List<Libro> getLibros() {
+        return libros;
     }
 
-    public void setLibrosDeAutor(List<Libro> librosDeAutor) {
-        this.librosDeAutor = librosDeAutor;
+    public void setLibros(List<Libro> libros) {
+        this.libros = libros;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder tituloLibros = new StringBuilder();
+        for (Libro libro : libros) {
+            tituloLibros.append(libro.getTitulo()).append("\n");
+        }
 
+        return "-----------Autor-----------" + "\n" +
+                "Autor: " + nombre + "\n" +
+                "fecha De Nacimiento: " + fechaDeNacimiento + "\n" +
+                "fecha De Fallecimiento:  " + fechaDeFallecimiento + "\n" +
+                "libros: " + tituloLibros ;
+    }
 }

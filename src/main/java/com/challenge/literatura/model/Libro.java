@@ -2,51 +2,56 @@ package com.challenge.literatura.model;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
+@Table(name="libro")
 public class Libro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String titulo;
+
+    @Column(name="idiomas")
     private String idiomas;
     private Double numeroDeDescargas;
+
+    @ManyToOne
+    @JoinColumn(name = "autor_id", nullable = false)
+    private Autor autor;
+
+    @Column(name="nombre_autor")
+    private String nombreAutor;
+
     private String libroDetalles;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    private List<Autor> autores = new ArrayList<>();
 
-    public Libro(DatosLibro datosLibro) {
+
+    public Libro(DatosLibro datosLibro, Autor autor) {
         this.titulo = datosLibro.titulo();
-        this.idiomas = String.valueOf(datosLibro.idiomas());
+        setIdiomas(String.valueOf(datosLibro.idiomas()));
         this.numeroDeDescargas = datosLibro.numeroDeDescargas();
+        this.nombreAutor = autor.getNombre();
         this.libroDetalles = String.valueOf(datosLibro.libroDetalles());
+        this.autor = autor;
     }
-
     public Libro() {
 
     }
 
     @Override
     public String toString() {
-        return "Libro{" +
-                "id=" + id +
-                ", titulo='" + titulo + '\'' +
-                ", idiomas='" + idiomas + '\'' +
-                ", numeroDeDescargas=" + numeroDeDescargas +
-                ", libroDetalles='" + libroDetalles + '\'' +
-                ", autores=" + autores +
-                '}';
+        return "\n" + "-----Libro----" + "\n" +
+                "Titulo: " + titulo + "\n" +
+                "Autor: " + nombreAutor + "\n" +
+                "Idioma: " + idiomas + "\n" +
+                "Numero de descargas: " + numeroDeDescargas + "\n";
     }
 
-    public Long getId() {
-        return id;
+    public Autor getAutor() {
+        return autor;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setAutor(Autor autor) {
+        this.autor = autor;
     }
 
     public String getTitulo() {
@@ -55,6 +60,14 @@ public class Libro {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getIdiomas() {
@@ -73,6 +86,14 @@ public class Libro {
         this.numeroDeDescargas = numeroDeDescargas;
     }
 
+    public String getNombreAutor() {
+        return nombreAutor;
+    }
+
+    public void setNombreAutor(String nombreAutor) {
+        this.nombreAutor = nombreAutor;
+    }
+
     public String getLibroDetalles() {
         return libroDetalles;
     }
@@ -80,14 +101,4 @@ public class Libro {
     public void setLibroDetalles(String libroDetalles) {
         this.libroDetalles = libroDetalles;
     }
-
-    public List<Autor> getAutores() {
-        return autores;
-    }
-
-    public void setAutores(List<Autor> autores) {
-        this.autores = autores;
-    }
-
-
 }
